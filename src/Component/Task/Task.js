@@ -9,6 +9,7 @@ const Task = ({description, id, isDone}) => {
   const [open_edit, setopen_verif_edit] = useState(false);
   // Hook to store the input value
   const [edit_desc, setedit_desc] = useState("");
+
   return (
     <div className="Task">
       {!open_edit ? (
@@ -28,17 +29,24 @@ const Task = ({description, id, isDone}) => {
           onChange={(e) => {
             setedit_desc(e.target.value);
           }}
+          autoFocus
         />
       )}
       <button
         onClick={() => {
           if (!open_edit) {
             setopen_verif_edit(!open_edit);
+
             setedit_desc(description);
           } else {
-            dispatch(editTask({id, description: edit_desc}));
-            setedit_desc("");
-            setopen_verif_edit(!open_edit);
+            if (!edit_desc) {
+              alert("Warning !! Empty modification");
+              setopen_verif_edit(!open_edit);
+            } else {
+              dispatch(editTask({id, description: edit_desc}));
+              setedit_desc("");
+              setopen_verif_edit(!open_edit);
+            }
           }
         }}
       >
